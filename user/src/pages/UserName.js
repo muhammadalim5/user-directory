@@ -17,9 +17,38 @@ class UserName extends Component {
         API.getRandomUser()
             .then(res => {
                 console.log(res.data.results)
-                this.setState({ users: res.data.results })
+                this.setState({ users: res.data.results, UserDirectory: res.data.results })
             })
             .catch(err => console.log(err));
+    }
+    SortUserName = () => {
+        console.log(this)
+        let array = this.state.users.sort(function (a, b) {
+            if (a.name.last < b.name.last) {
+                return -1;
+            }
+            if (a.name.last > b.name.last) {
+                return 1;
+            }
+            return 0;
+        });
+        this.setState({ users: array })
+    }
+    FilterByFemale = () => {
+        console.log(this)
+        let array2 = this.state.users.filter(user => user.gender === "female");
+        console.log(array2)
+        this.setState({ users: array2 })
+    }
+    FilterByMale = () => {
+        console.log(this)
+        let array3 = this.state.users.filter(user => user.gender === "male");
+        console.log(array3)
+        this.setState({ users: array3 })
+    }
+    UserList = () => {
+        console.log(this)
+        this.setState({ users: this.state.UserDirectory })
     }
     render() {
         return (
@@ -28,7 +57,10 @@ class UserName extends Component {
                     <Col><Jumbotron>
                         <h1>User List</h1>
                         <p>
-                            <Button variant="primary">Learn more</Button>
+                            <Button onClick= {this.SortUserName} variant="primary">Sort by Last Name</Button>
+                            <Button onClick= {this.FilterByFemale} variant="primary">Female Users</Button>
+                            <Button onClick= {this.FilterByMale} variant="primary">Male Users</Button>
+                            <Button onClick= {this.UserList} variant="primary">Complete User List</Button>
                         </p>
                     </Jumbotron></Col>
                 </Row>
@@ -45,7 +77,7 @@ class UserName extends Component {
                                 </tr>
                             </thead>
                             <tbody>
-                               
+
                                 {this.state.users.map(user => (
                                     <Tables
                                         image={user.picture.thumbnail}
@@ -66,6 +98,6 @@ class UserName extends Component {
 
 
 }
-    export default UserName;
+export default UserName;
 
 
